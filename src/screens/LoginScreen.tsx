@@ -1,34 +1,41 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { NavigationProp } from '@react-navigation/native';
 
-// Define el tipo para las rutas de navegación (ajusta según tus rutas reales)
+// ────────────────────────────────────────────────────────────────
+// TIPADO DE RUTAS
+// ────────────────────────────────────────────────────────────────
 type RootStackParamList = {
   Home: undefined;
   Register: undefined;
-  // Agrega más rutas cuando las tengas, ej: Dashboard: undefined;
+  DashboardUsuario: undefined;
 };
 
-// Tipa el prop navigation
-export default function LoginScreen({ navigation }: { navigation: NavigationProp<RootStackParamList> }) {
+// ────────────────────────────────────────────────────────────────
+// COMPONENTE: LoginScreen
+// ────────────────────────────────────────────────────────────────
+// Pantalla de inicio de sesión.
+// Por ahora simula login con usuario/contraseña "admin" / "carcare".
+export default function LoginScreen({
+  navigation,
+}: {
+  navigation: NavigationProp<RootStackParamList>;
+}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log('Intentando login con:', { username, password });
-
-    // Validación básica temporal
-    if (!username || !password) {
-      alert('Por favor completa usuario y contraseña');
+    if (!username.trim() || !password.trim()) {
+      Alert.alert('Error', 'Completa usuario y contraseña');
       return;
     }
 
-    // Simulación de login exitoso (más adelante lo reemplazamos por llamada real al backend)
+    // Simulación temporal (más adelante → llamada real al backend)
     if (username === 'admin' && password === 'carcare') {
-      alert('¡Login exitoso! (simulado)');
-      navigation.navigate('Home'); // O a un dashboard según rol cuando lo agreguemos
+      Alert.alert('¡Éxito!', 'Login simulado correcto');
+      navigation.navigate('DashboardUsuario'); // ← redirige al dashboard de usuario
     } else {
-      alert('Usuario o contraseña incorrectos');
+      Alert.alert('Error', 'Usuario o contraseña incorrectos');
     }
   };
 
@@ -54,10 +61,7 @@ export default function LoginScreen({ navigation }: { navigation: NavigationProp
         secureTextEntry
       />
 
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={handleLogin}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
